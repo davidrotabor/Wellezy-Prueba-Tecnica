@@ -1,0 +1,21 @@
+.pagination
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-top: 15px
+
+  button
+    padding: 8px 12px
+    margin: 0 5px
+    border: 1px solid #00468b
+    color: #00468b
+    background-color: white
+    cursor: pointer
+    font-size: 14px
+
+  &.active
+    background-color: #00468b
+    color: white
+
+  &:hover:not(.active)
+    background-color: #00468b20
