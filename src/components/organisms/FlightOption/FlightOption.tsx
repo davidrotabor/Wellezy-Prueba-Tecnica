@@ -1,3 +1,4 @@
+import styles from './FlightOption.module.sass'
 
 import SegmentHeader from '../../atoms/SegmentHeader/SegmentHeader';
 import SegmentRow from '../../atoms/SegmentRow/SegmentRow';
@@ -8,6 +9,7 @@ interface FlightOptionProps {
     segments: SegmentRowProps["segment"][];
     num: string;
   };
+  onClickReserve: () => void
 }
 
 interface SegmentRowProps {
@@ -25,7 +27,7 @@ interface SegmentRowProps {
   };
 }
 
-const FlightOption: React.FC<FlightOptionProps> = ({ option }) => {
+const FlightOption: React.FC<FlightOptionProps> = ({ option, onClickReserve }) => {
   const totalSegments = option.segments.length;
   const totalDuration = option.segments.reduce((acc, segment) => {
     return acc;
@@ -38,11 +40,12 @@ const FlightOption: React.FC<FlightOptionProps> = ({ option }) => {
   };
 
   return (
-    <tbody className="flight-option">
+    <tbody className={styles.flightOption}>
       <SegmentHeader
         optionNumber={option.num}
         totalSegments={totalSegments}
         totalDuration={formatDuration(totalDuration)}
+        onClickReserve={onClickReserve}
       />
       {option.segments.map((segment, index) => (
         <SegmentRow key={index} segment={segment} />

@@ -1,4 +1,5 @@
 import styles from './SegmentRow.module.sass'
+import Image from 'next/image'
 
 interface SegmentRowProps {
   segment: {
@@ -32,9 +33,15 @@ const SegmentRow: React.FC<SegmentRowProps> = ({ segment }) => {
       <td>{timeOfArrival}</td>
       <td>{location[0].locationName}</td>
       <td>{location[1].locationName}</td>
-      <td>{companyId.marketingCarrier}</td>
+      <td><Image
+        src={`https://pics.avs.io/60/60/${companyId.marketingCarrier}.png`}
+        alt="Descripción de la imagen"
+        width={100}
+        height={100}
+      /></td>
       <td>{flightOrtrainNumber}</td>
       <td>{equipment}</td>
+      <td></td>
     </tr>
   );
 };

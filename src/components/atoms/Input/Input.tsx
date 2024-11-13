@@ -1,4 +1,4 @@
-// components/atoms/Input.tsx
+import styles from './Input.module.sass'
 
 interface InputProps {
   placeholder?: string;
@@ -13,7 +13,7 @@ const Input: React.FC<InputProps> = ({ placeholder, value, onChange }) => {
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className="input"
+      className={styles.input}
     />
   );
 };

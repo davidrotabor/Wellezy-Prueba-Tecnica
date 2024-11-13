@@ -1,3 +1,5 @@
+import styles from './FlightTable.module.sass'
+
 import { useState } from 'react';
 import TableHeader from '../../atoms/TableHeader/TableHeader';
 import FlightOption from '../FlightOption/FlightOption';
@@ -16,15 +18,19 @@ interface SegmentRowProps {
     flightOrtrainNumber: string;
     equipment: string;
   };
+
 }
+
 
 interface FlightTableProps {
   flightOptions: { segments: SegmentRowProps["segment"][] }[];
+  onClickReserve: () => void
+  onSegmentsSelect: (segments: SegmentRowProps["segment"][]) => void;
 }
 
-const FlightTable: React.FC<FlightTableProps> = ({ flightOptions }) => {
+const FlightTable: React.FC<FlightTableProps> = ({ flightOptions, onClickReserve, onSegmentsSelect }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const optionsPerPage = 7; // Ajusta según el número deseado de opciones por página
+  const optionsPerPage = 3; // Ajusta según el número deseado de opciones por página
   const totalPages = Math.ceil(flightOptions.length / optionsPerPage);
 
   const headers = [
@@ -38,11 +44,14 @@ const FlightTable: React.FC<FlightTableProps> = ({ flightOptions }) => {
   );
 
   return (
-    <div className="flight-table">
+    <div className={styles.flightTable}>
       <table>
         <TableHeader headers={headers} />
         {paginatedOptions.map((option, index) => (
-          <FlightOption key={index} option={{ segments: option.segments, num: String(index + 1) }} />
+          <FlightOption key={index} option={{ segments: option.segments, num: String(index + 1) }} onClickReserve={() => {
+            onClickReserve();
+            onSegmentsSelect(option.segments);
+          }} />
         ))}
       </table>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />

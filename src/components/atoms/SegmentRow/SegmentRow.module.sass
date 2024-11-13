@@ -1,18 +1,10 @@
 .segmentRow
-  display: flex
-  align-items: center
-  padding: 8px 10px
-  border-bottom: 1px solid #ddd
+  text-align: center
+  padding: 10px 5px
+  border-bottom: 1px solid #eee
 
-  .departure, .arrival
-    flex: 1
-    text-align: center
+  &:nth-child(odd)
+    background-color: #fafafa
 
-  .city, .airline, .flightNumber, .equipment
-    flex: 1
-    text-align: center
-    font-size: 14px
-    color: #333
-
-  &:nth-child(even)
-    background-color: #f9f9f9
+  &:hover
+    background-color: #f0f8ff

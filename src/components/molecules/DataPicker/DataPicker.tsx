@@ -1,4 +1,4 @@
-// components/molecules/DatePicker.tsx
+import styles from './DataPicker.module.sass'
 
 interface DatePickerProps {
   value: string;
@@ -11,7 +11,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
       type="date"
       value={value}
       onChange={onChange}
-      className="date-picker"
+      className={styles.dataPicker}
     />
   );
 };

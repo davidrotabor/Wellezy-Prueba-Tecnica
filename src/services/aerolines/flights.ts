@@ -1,6 +1,6 @@
 import { airlinesUrl } from "./urls";
 
-export const getFlights = async (departureCity: string, arrivalCity: string, hour: string) => {
+export const getFlights = async (qtyPassengers: string, adult: string, departureCity: string, arrivalCity: string, hour: string) => {
     try {
         const response = await fetch(airlinesUrl.flights.all, {
             method: 'POST',
@@ -9,8 +9,8 @@ export const getFlights = async (departureCity: string, arrivalCity: string, hou
             },
             body: JSON.stringify({
                 searchs: 20,
-                qtyPassengers: 1,
-                adult: 1,
+                qtyPassengers: parseInt(qtyPassengers),
+                adult: parseInt(adult),
                 itinerary: [{
                     departureCity: departureCity,
                     arrivalCity: arrivalCity,

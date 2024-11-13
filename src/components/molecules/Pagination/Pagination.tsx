@@ -8,7 +8,7 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   return (
-    <div className="pagination">
+    <div className={styles.pagination}>
       <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
         Anterior
       </button>

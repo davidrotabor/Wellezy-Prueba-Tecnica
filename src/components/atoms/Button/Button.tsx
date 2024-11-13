@@ -1,4 +1,4 @@
-// components/atoms/Button.tsx
+import styles from './Button.module.sass'
 
 interface ButtonProps {
   onClick: () => void;
@@ -7,7 +7,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ onClick, children }) => {
   return (
-    <button onClick={onClick} className="button">
+    <button onClick={onClick} className={styles.button}>
       {children}
     </button>
   );
