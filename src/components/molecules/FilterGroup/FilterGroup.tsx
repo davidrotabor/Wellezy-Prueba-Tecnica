@@ -1,5 +1,5 @@
 
-import InputField from "../../atoms/InputField/InputField";
+import InputField from "../../atoms/Input/Input";
 import SelectDropdown from "../../atoms/SelectDropdown/SelectDropdown";
 
 interface FilterGroupProps {
