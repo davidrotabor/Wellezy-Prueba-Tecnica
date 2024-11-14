@@ -24,3 +24,5 @@ npm i
 # Ejecuta el proyecto en modo de desarrollo
 npm run dev
 
+# Ejecuta los tests
+npm test
