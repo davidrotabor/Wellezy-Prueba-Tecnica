@@ -5,9 +5,9 @@ import Input from '../../atoms/Input/Input'
 
 interface Person {
   id: number
-  nombre: string
-  identificacion: string
-  celular: string
+  name: string
+  idNumber: string
+  phoneNumber: string
 }
 
 interface PersonFormProps {
@@ -24,17 +24,17 @@ const PersonForm: React.FC<PersonFormProps> = ({ id, nameValue, idValue, phoneVa
       <Input
         placeholder="Nombre completo"
         value={nameValue}
-        onChange={(e) => onChange(id, 'nombre', e.target.value)}
+        onChange={(e) => onChange(id, 'name', e.target.value)}
       />
       <Input
         placeholder="Número de identificación"
         value={idValue}
-        onChange={(e) => onChange(id, 'identificacion', e.target.value)}
+        onChange={(e) => onChange(id, 'idNumber', e.target.value)}
       />
       <Input
         placeholder="Número de celular"
         value={phoneValue}
-        onChange={(e) => onChange(id, 'celular', e.target.value)}
+        onChange={(e) => onChange(id, 'phoneNumber', e.target.value)}
       />
     </div>
   )

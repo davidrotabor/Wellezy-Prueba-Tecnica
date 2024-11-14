@@ -1,4 +1,4 @@
-import { airlinesUrl } from "./urls";
+import { airlinesUrl, backUrl } from "./urls";
 
 export const getFlights = async (qtyPassengers: string, adult: string, departureCity: string, arrivalCity: string, hour: string) => {
     try {
@@ -25,4 +25,40 @@ export const getFlights = async (qtyPassengers: string, adult: string, departure
     catch (error) {
         console.log(error)
     }
+}
+
+export const setFlights = async (segments: any, itineraryId: string) => {
+
+  for (const flight of segments) {
+    const departureCity = flight.location[0].locationName;
+    const arrivalCity = flight.location[flight.location.length - 1].locationName;
+    const dateDeparture = flight.productDateTime.dateFormatDeparture;
+    const dateArrival = flight.productDateTime.dateFormatArrival;
+
+    const data = {
+      departureCity,
+      arrivalCity,
+      dateDeparture,
+      dateArrival,
+      itinerary_id: itineraryId,
+    };
+
+    try {
+      const response = await fetch(backUrl.flights.create, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        console.error('Error al subir el itinerario:', response.statusText);
+      } else {
+        console.log('Itinerario enviado con éxito:', data);
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+    }
+  }
 }

@@ -1,3 +1,6 @@
+/*
+El apartado dónde se hace la busqueda de los vuelos
+*/
 'use client'
 import styles from './SearchForm.module.sass'
 

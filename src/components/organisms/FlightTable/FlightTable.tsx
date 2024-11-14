@@ -1,5 +1,7 @@
+/*
+La tabla en su totalidad, con la paginación
+*/
 import styles from './FlightTable.module.sass'
-
 import { useState } from 'react';
 import TableHeader from '../../atoms/TableHeader/TableHeader';
 import FlightOption from '../FlightOption/FlightOption';
@@ -30,7 +32,7 @@ interface FlightTableProps {
 
 const FlightTable: React.FC<FlightTableProps> = ({ flightOptions, onClickReserve, onSegmentsSelect }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const optionsPerPage = 3; // Ajusta según el número deseado de opciones por página
+  const optionsPerPage = 3;
   const totalPages = Math.ceil(flightOptions.length / optionsPerPage);
 
   const headers = [

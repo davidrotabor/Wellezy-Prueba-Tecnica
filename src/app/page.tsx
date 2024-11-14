@@ -3,8 +3,9 @@ import Image from "next/image";
 import styles from "./page.module.sass";
 import SearchForm from "app/components/organisms/SearchForm/SearchForm";
 import FlightTable from "app/components/organisms/FlightTable/FlightTable";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getFlights } from "app/services/aerolines/flights";
+import { setItinerary } from "app/services/aerolines/itineraries";
 import FiltersPanel from "app/components/organisms/FiltersPanel/FiltersPanel";
 import ModalForm from "app/components/organisms/ModalForm/ModalForm";
 
@@ -24,19 +25,30 @@ interface SegmentRowProps {
 }
 interface Person {
   id: number
-  nombre: string
-  identificacion: string
-  celular: string
+  name: string
+  idNumber: string
+  phoneNumber: string
 }
 
 export default function Home() {
+  // Los vuelos tal cual como viene el API
   const [flightOptions, setFlightOptions] = useState<any[]>([]);
+  // Los vuelos después de añadirle los filtros
   const [filteredFlights, setFilteredFlights] = useState<any[]>([]);
+  // Aqui se guardarán las aerolineas después de filtrar, para los vuelos
   const [airlineOptions, setAirlineOptions] = useState<string[]>([]);
+  // La cantidad de pasajeros para tener persistencia en el formulario
+  const [qtyPassengers, setQtyPassengers] = useState<number>(0);
+  // Para indicar la carga
   const [loading, setLoading] = useState<boolean>(false);
+  // Abrir o cerrar el modal de los pasajeros
   const [isModalOpen, setIsModalOpen] = useState(false)
+  // La información de los pasajeros ingresada en el modal
   const [personsData, setPersonsData] = useState<Person[]>([])
+  // Información de los segmentos del itinerario seleccionado
+  const [segments, setSegments] = useState<any[]>([]);
 
+  // Lectura al API que nos da el itinerario
   const handleSearch = async (searchParams: {
     qtyPassengers: string;
     adult: string;
@@ -45,6 +57,7 @@ export default function Home() {
     date: string;
   }) => {
     setLoading(true)
+    setQtyPassengers(parseInt(searchParams.qtyPassengers));
     const response = await getFlights(
       searchParams.qtyPassengers,
       searchParams.adult,
@@ -52,13 +65,12 @@ export default function Home() {
       searchParams.arrivalCity,
       searchParams.date
     );
-
-    // Obtener las opciones de vuelo
+    
     const flights = response.data.Seg1.map((option: any) => ({
       segments: option.segments,
     }));
 
-    // Extraer aerolíneas únicas
+    // Se filtran las aerolineas que existan en los vuelos de respuesta
     const airlines = new Set(
       flights.flatMap((option: any) =>
         option.segments.map((segment: any) => segment.companyId.marketingCarrier)
@@ -73,7 +85,7 @@ export default function Home() {
 
   const handleApplyFilters = (filters: { airline: string; arrivalDate: string }) => {
     const filtered = flightOptions.filter((option) => {
-      const lastSegment = option.segments[option.segments.length - 1]; // Último segmento
+      const lastSegment = option.segments[option.segments.length - 1];
 
       const matchesAirline =
         filters.airline === "" ||
@@ -84,17 +96,13 @@ export default function Home() {
       const matchesArrivalDate =
         filters.arrivalDate === "" ||
         lastSegment.productDateTime.dateOfArrival === filters.arrivalDate;
-      console.log(lastSegment.productDateTime.dateOfArrival)
-      console.log(filters.arrivalDate)
       return matchesAirline && matchesArrivalDate;
     });
 
     setFilteredFlights(filtered);
   };
 
-  const handleSegments = (segments: SegmentRowProps["segment"][]) => {
-    console.log("Segments received from FlightTable:", segments);
-  };
+  
 
   const openModal = () => {
     setIsModalOpen(true)
@@ -104,11 +112,21 @@ export default function Home() {
     setIsModalOpen(false)
   }
 
+  
+  // Encargado de la persistencia de los vuelos en el itinerario que desee reservar
+  const handleSegments = (segments: SegmentRowProps["segment"][]) => {
+    setSegments(segments)
+  };
+
+  // Encargado de enviar los datos para hacer el POST
   const handlePersonsChange = (updatedPersons: Person[]) => {
     setPersonsData(updatedPersons)
-    console.log(updatedPersons)
   }
 
+  // Encargado de enviar los datos para hacer el POST
+  const booking = () => {
+    setItinerary(segments, personsData)
+  }
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -128,9 +146,10 @@ export default function Home() {
         </div>
         {isModalOpen && (
           <ModalForm
-            initialCount={1}
+            initialCount={qtyPassengers}
             onClose={closeModal}
             onPersonsChange={handlePersonsChange}
+            onBooking={booking}
           />
         )}
       </main>

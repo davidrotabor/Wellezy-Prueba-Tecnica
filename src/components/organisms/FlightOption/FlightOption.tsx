@@ -1,5 +1,9 @@
+/*
+Este es el item completo de un itinerario
+1. El encabezado con información del itinerario
+2. Los vuelos que contiene el itinerario
+*/
 import styles from './FlightOption.module.sass'
-
 import SegmentHeader from '../../atoms/SegmentHeader/SegmentHeader';
 import SegmentRow from '../../atoms/SegmentRow/SegmentRow';
 
