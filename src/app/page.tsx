@@ -3,11 +3,13 @@ import Image from "next/image";
 import styles from "./page.module.sass";
 import SearchForm from "app/components/organisms/SearchForm/SearchForm";
 import FlightTable from "app/components/organisms/FlightTable/FlightTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getFlights } from "app/services/aerolines/flights";
 import { setItinerary } from "app/services/aerolines/itineraries";
 import FiltersPanel from "app/components/organisms/FiltersPanel/FiltersPanel";
 import ModalForm from "app/components/organisms/ModalForm/ModalForm";
+import { useRouter } from "next/navigation";
+import { useAuth } from "app/app/context/AuthContext"
 
 interface SegmentRowProps {
   segment: {
@@ -47,6 +49,20 @@ export default function Home() {
   const [personsData, setPersonsData] = useState<Person[]>([])
   // Información de los segmentos del itinerario seleccionado
   const [segments, setSegments] = useState<any[]>([]);
+
+  const { user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() =>  {
+
+    const fetchUserData = async () =>  {
+      if (!user) {
+        router.push('/login')
+      }
+    }
+    fetchUserData();
+
+  }, []);
 
   // Lectura al API que nos da el itinerario
   const handleSearch = async (searchParams: {
@@ -156,3 +172,4 @@ export default function Home() {
     </div>
   );
 }
+
